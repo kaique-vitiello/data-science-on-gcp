@@ -31,12 +31,18 @@ def ingest_flights(request):
       year = escape(json['year']) if 'year' in json else None
       month = escape(json['month']) if 'month' in json else None
       bucket = escape(json['bucket'])  # required
-
-      if year is None or month is None or len(year) == 0 or len(month) == 0:
-         year, month = next_month(bucket)
-      logging.debug('Ingesting year={} month={}'.format(year, month))
-      gcsfile = ingest(year, month, bucket)
-      logging.info('Success ... ingested to {}'.format(gcsfile))
+      
+      current_year = datetime.date.today().year
+      #current_month = datetime.date.today().year
+      while (year < current_year):
+         if year is None or month is None or len(year) == 0 or len(month) == 0:
+            year, month = next_month(bucket)
+         logging.debug('Ingesting year={} month={}'.format(year, month))
+         gcsfile = ingest(year, month, bucket)
+         logging.info('Success ... ingested to {}'.format(gcsfile))
    except DataUnavailable as e:
       logging.info('Try again later: {}'.format(e.message))
+
+
+
 

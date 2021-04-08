@@ -34,7 +34,7 @@ def ingest_flights(request):
       
       current_year = datetime.date.today().year
       #current_month = datetime.date.today().year
-      while (year < current_year):
+      while (year < 2021):
          if year is None or month is None or len(year) == 0 or len(month) == 0:
             year, month = next_month(bucket)
          logging.debug('Ingesting year={} month={}'.format(year, month))
@@ -42,7 +42,3 @@ def ingest_flights(request):
          logging.info('Success ... ingested to {}'.format(gcsfile))
    except DataUnavailable as e:
       logging.info('Try again later: {}'.format(e.message))
-
-
-
-

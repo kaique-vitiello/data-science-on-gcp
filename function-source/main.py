@@ -16,6 +16,7 @@
 
 
 import logging
+import datetime
 from flask import escape
 from ingest_flights import *
  
@@ -31,14 +32,14 @@ def ingest_flights(request):
       year = escape(json['year']) if 'year' in json else None
       month = escape(json['month']) if 'month' in json else None
       bucket = escape(json['bucket'])  # required
-      
-      current_year = datetime.date.today().year
-      #current_month = datetime.date.today().year
-      while (year < 2021):
-         if year is None or month is None or len(year) == 0 or len(month) == 0:
-            year, month = next_month(bucket)
-         logging.debug('Ingesting year={} month={}'.format(year, month))
-         gcsfile = ingest(year, month, bucket)
-         logging.info('Success ... ingested to {}'.format(gcsfile))
+
+   
+      if year is None or month is None or len(year) == 0 or len(month) == 0:
+         year, month = next_month(bucket)
+      logging.debug('Ingesting year={} month={}'.format(year, month))
+      gcsfile = ingest(year, month, bucket)
+      logging.info('Success ... ingested to {}'.format(gcsfile))
+      return year
+      while_loop()
    except DataUnavailable as e:
       logging.info('Try again later: {}'.format(e.message))

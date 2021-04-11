@@ -16,7 +16,6 @@
 
 
 import logging
-import datetime
 from flask import escape
 from ingest_flights import *
  
@@ -39,7 +38,5 @@ def ingest_flights(request):
       logging.debug('Ingesting year={} month={}'.format(year, month))
       gcsfile = ingest(year, month, bucket)
       logging.info('Success ... ingested to {}'.format(gcsfile))
-      return year
-      while_loop()
    except DataUnavailable as e:
       logging.info('Try again later: {}'.format(e.message))
